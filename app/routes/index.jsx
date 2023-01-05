@@ -27,6 +27,8 @@ export async function loader({ request }) {
   const url = new URL(request.url);
   const searchParams = url.searchParams;
 
+  console.log(url);
+
   const afterPostSuccess = searchParams.get("success") === "true";
   const query = searchParams.get("search");
 
