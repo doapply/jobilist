@@ -25,9 +25,13 @@ import { capitalizeSentence } from "../helpers/misc";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
-  const searchParams = url.searchParams;
 
-  console.log(url);
+  const hostname = url.hostname;
+  const subdomains = hostname.split(".").slice(0, -2);
+  const mainSubdomain = subdomains[0];
+  console.log(hostname, subdomains, mainSubdomain);
+
+  const searchParams = url.searchParams;
 
   const afterPostSuccess = searchParams.get("success") === "true";
   const query = searchParams.get("search");
@@ -113,6 +117,8 @@ export async function loader({ request }) {
         results,
 
         query,
+
+        mainSubdomain
       },
       {
         headers: {
@@ -208,6 +214,7 @@ export default function Index() {
   const isBusy = transition.state !== "idle" || notifyFetcher.state !== "idle";
 
   return (
+    loaderData?.mainSubdomain && loaderData.mainSubdomain !== "www" ? (loaderData.mainSubdomain) :
     <Page>
       <Header home showPitch afterPostSuccess={afterPostSuccess} />
 
